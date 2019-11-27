@@ -267,8 +267,32 @@ cc2[ 3:6 ]
 rho <- cc1$cor
 ## Define number of observations, number of variables in first set, and number of variables in the second set.
 n <- dim( G1 )[ 1 ]
-p <- length( G1 )
-q <- length( G2 )
+p <- ncol( G1 )
+q <- ncol( G2 )
 
 ## Calculate p-values using the F-approximations of different test statistics:
+Wilks <- p.asym(rho, n, p, q, tstat = "Wilks")
 p.asym(rho, n, p, q, tstat = "Hotelling")
+
+Tab1 <- matrix( 0, 2, 5 )
+Tab1[ 1:2, 1 ] <- t( cor )
+Tab1[ 1:2, 2 ] <- Wilks$approx
+Tab1[ 1:2, 3 ] <- Wilks$df1
+Tab1[ 1:2, 4 ] <- Wilks$df2
+Tab1[ 1:2, 5 ] <- Wilks$p.value
+colnames( Tab1 ) <- c( "Corr", "F", "df1", "df2", "p-value" )
+rownames( Tab1 ) <- c( "dim 1", "dim 2" )
+#Table 1: Tests of Canonical Dimensions-------------------------------------------------------------
+Tab1
+#Table 2: Standardized Canonical Coefficients-------------------------------------------------------
+
+
+
+# Test of significance
+val <- 1- sum( cc1$cor )
+Chi_test <- -( n -1/2 * ( p + q + 3 ) ) * sum( log( 1 -cc1$cor ) )
+Chi_test 
+#15.96467
+
+#Theorical p-value with p*q df and alpha=0.05; 15,5073 < 15,963 so, we cannot reject Ho 
+#at least one of the r canonical correlations is significant.
