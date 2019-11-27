@@ -40,13 +40,22 @@ Uruguay_H <- as.data.frame( dataCCA[ dataCCA$HomeTeam == "Uruguay", ] )
 Germany_H <- as.data.frame( dataCCA[ dataCCA$HomeTeam == "Germany", ] )
 Italy_H <- as.data.frame( dataCCA[ dataCCA$HomeTeam == "Italy", ] )
 France_H <- as.data.frame( dataCCA[ dataCCA$HomeTeam == "France", ] )
+Colombia_H <- as.data.frame( dataCCA[ dataCCA$HomeTeam == "Colombia", ] )
+Argentina_H <- as.data.frame( dataCCA[ dataCCA$HomeTeam == "Argentina", ] )
+Netherlands_H <- as.data.frame( dataCCA[ dataCCA$HomeTeam == "Netherlands", ] )
+Spain_H <- as.data.frame( dataCCA[ dataCCA$HomeTeam == "Spain", ] )
 #AWAY GOALS 
 Ecuador_A <- as.data.frame( dataCCA[ dataCCA$AwayTeam == "Ecuador", ] )
 Brazil_A <- as.data.frame( dataCCA[ dataCCA$AwayTeam == "Brazil", ] )
 Uruguay_A <- as.data.frame( dataCCA[ dataCCA$AwayTeam == "Uruguay", ] )
 Germany_A <- as.data.frame( dataCCA[ dataCCA$AwayTeam == "Germany", ] )
 Italy_A <- as.data.frame( dataCCA[ dataCCA$AwayTeam == "Italy", ] )
-France_A <- as.data.frame( dataCCA[ dataCCA$HomeTeam == "France", ] )
+France_A <- as.data.frame( dataCCA[ dataCCA$AwayTeam == "France", ] )
+Colombia_A <- as.data.frame( dataCCA[ dataCCA$AwayTeam == "Colombia", ] )
+Argentina_A <- as.data.frame( dataCCA[ dataCCA$AwayTeam == "Argentina", ] )
+Netherlands_A <- as.data.frame( dataCCA[ dataCCA$AwayTeam == "Netherlands", ] )
+Spain_A <- as.data.frame( dataCCA[ dataCCA$AwayTeam == "Spain", ] )
+
 names( Italy_A ) <- c("Year", "Country",   "HomeTeam",  "HomeGoals", "AwayGoals", "AwayTeam")
 Italy_A
 Ecuador_H <- select( Ecuador_H, Year, Country, HomeGoals, AwayGoals )
@@ -97,6 +106,9 @@ Uruguay_H
 Uruguay_A <- select( Uruguay_A, Year, Country, AwayGoals, HomeGoals )
 names( Uruguay_A ) <- c( "Year", "Country", "GoalsFavor", "GoalsContra" )
 Uruguay_A
+
+names( Argentina_A ) <- c( "Year", "Country", "GoalsFavor", "GoalsContra" )
+
 #URUGUAY GOALS--------------------------------------------------------------------------------------
 Ur_Goals <- rbind( Uruguay_H, Uruguay_A )
 Ur_Goals
@@ -111,8 +123,53 @@ France_A
 #GERMANY GOALS--------------------------------------------------------------------------------------
 Fra_Goals <- rbind( France_H, France_A )
 Fra_Goals
+
+#---------------------------------------------------------------------------------------------------
+Colombia_H <- select( Colombia_H, Year, Country, HomeGoals, AwayGoals )
+names( Colombia_H ) <- c( "Year", "Country", "GoalsFavor", "GoalsContra" )
+Colombia_H
+Colombia_A <- select( Colombia_A, Year, Country, AwayGoals, HomeGoals )
+names( Colombia_A ) <- c( "Year", "Country", "GoalsFavor", "GoalsContra" )
+Colombia_A
+#COLOMBIA GOALS--------------------------------------------------------------------------------------
+Col_Goals <- rbind( Colombia_H, Colombia_A )
+Col_Goals
+
+#---------------------------------------------------------------------------------------------------
+Argentina_H <- select( Argentina_H, Year, Country, HomeGoals, AwayGoals )
+names( Argentina_H ) <- c( "Year", "Country", "GoalsFavor", "GoalsContra" )
+Argentina_H
+Argentina_A <- Argentina_A[ ,c( 1, 2, 5, 4 ) ]
+names( Argentina_A ) <- c( "Year", "Country", "GoalsFavor", "GoalsContra" )
+Argentina_A
+#ARGENTINA GOALS------------------------------------------------------------------------------------
+Arg_Goals <- rbind( Argentina_H, Argentina_A )
+Arg_Goals
+
+#---------------------------------------------------------------------------------------------------
+Netherlands_H <- select( Netherlands_H, Year, Country, HomeGoals, AwayGoals )
+names( Netherlands_H ) <- c( "Year", "Country", "GoalsFavor", "GoalsContra" )
+Netherlands_H
+Netherlands_A <- Netherlands_A[ ,c( 1, 2, 5, 4 ) ]
+names( Netherlands_A ) <- c( "Year", "Country", "GoalsFavor", "GoalsContra" )
+Netherlands_A
+#ARGENTINA GOALS------------------------------------------------------------------------------------
+Neth_Goals <- rbind( Netherlands_H, Netherlands_A )
+Neth_Goals
+
+#---------------------------------------------------------------------------------------------------
+Spain_H <- select( Spain_H, Year, Country, HomeGoals, AwayGoals )
+names( Spain_H ) <- c( "Year", "Country", "GoalsFavor", "GoalsContra" )
+Spain_H
+Spain_A <- Spain_A[ ,c( 1, 2, 5, 4 ) ]
+names( Spain_A ) <- c( "Year", "Country", "GoalsFavor", "GoalsContra" )
+Spain_A
+#ARGENTINA GOALS------------------------------------------------------------------------------------
+Spain_Goals <- rbind( Spain_H, Spain_A )
+Spain_Goals
+
 #FINAL GOALS----------------------------------------------------------------------------------------
-Goals <- matrix( 0, 2, 6 )
+Goals <- matrix( 0, 2, 10 )
 Goals[ 1, 1 ] <- sum( Ec_Goals[ 1:4, 3 ] )
 Goals[ 2, 1 ] <- sum( Ec_Goals[ 5:10, 3 ] )
 Goals[ 1, 2 ] <- sum( Br_Goals[ 1:82, 3 ] )
@@ -125,12 +182,21 @@ Goals[ 1, 5 ] <- sum( Ur_Goals[ 1:28, 3 ] )
 Goals[ 2, 5 ] <- sum( Ur_Goals[ 29:52, 3 ] )
 Goals[ 1, 6 ] <- sum( Fra_Goals[ 1:31, 3 ] )
 Goals[ 2, 6 ] <- sum( Fra_Goals[ 32:62, 3 ] )
+Goals[ 1, 7 ] <- sum( Col_Goals[ 1:7, 3 ] )
+Goals[ 2, 7 ] <- sum( Col_Goals[ 8:20, 3 ] )
+Goals[ 1, 8 ] <- sum( Arg_Goals[ 1:54, 3 ] )
+Goals[ 2, 8 ] <- sum( Arg_Goals[ 55:81, 3 ] )
+Goals[ 1, 9 ] <- sum( Neth_Goals[ 1:32, 3 ] )
+Goals[ 2, 9 ] <- sum( Neth_Goals[ 33:54, 3 ] )
+Goals[ 1, 10 ] <- sum( Spain_Goals[ 1:29, 3 ] )
+Goals[ 2, 10 ] <- sum( Spain_Goals[ 30:58, 3 ] )
 
-colnames( Goals ) <- c( "Ecuador", "Brazil", "Germany", "Italy", "Uruguay", "France" )
+colnames( Goals ) <- c( "Ecuador", "Brazil", "Germany", "Italy", "Uruguay", "France", "Colombia", 
+                        "Argentina", "Netherlands", "Spain" )
 rownames( Goals ) <- c( "Home Favor Goals", "Away Favor Goals" )
 Goals
 
-GoalsContra <- matrix( 0, 2, 6 )
+GoalsContra <- matrix( 0, 2, 10 )
 GoalsContra[ 1, 1 ] <- sum( Ec_Goals[ 1:4, 4 ] )
 GoalsContra[ 2, 1 ] <- sum( Ec_Goals[ 5:10, 4 ] )
 GoalsContra[ 1, 2 ] <- sum( Br_Goals[ 1:82, 4 ] )
@@ -143,19 +209,31 @@ GoalsContra[ 1, 5 ] <- sum( Ur_Goals[ 1:28, 4 ] )
 GoalsContra[ 2, 5 ] <- sum( Ur_Goals[ 29:52, 4 ] )
 GoalsContra[ 1, 6 ] <- sum( Fra_Goals[ 1:31, 4 ] )
 GoalsContra[ 2, 6 ] <- sum( Fra_Goals[ 32:62, 4 ] )
-colnames( GoalsContra ) <- c( "Ecuador", "Brazil", "Germany", "Italy", "Uruguay", "France" )
+GoalsContra[ 1, 7 ] <- sum( Col_Goals[ 1:7, 4 ] )
+GoalsContra[ 2, 7 ] <- sum( Col_Goals[ 8:20, 4 ] )
+GoalsContra[ 1, 8 ] <- sum( Arg_Goals[ 1:54, 4 ] )
+GoalsContra[ 2, 8 ] <- sum( Arg_Goals[ 55:81, 4 ] )
+GoalsContra[ 1, 9 ] <- sum( Neth_Goals[ 1:32, 4 ] )
+GoalsContra[ 2, 9 ] <- sum( Neth_Goals[ 33:54, 4 ] )
+GoalsContra[ 1, 10 ] <- sum( Spain_Goals[ 1:29, 4 ] )
+GoalsContra[ 2, 10 ] <- sum( Spain_Goals[ 30:58, 4 ] )
+
+colnames( GoalsContra ) <- c( "Ecuador", "Brazil", "Germany", "Italy", "Uruguay", "France", "Colombia", 
+                              "Argentina", "Netherlands", "Spain" )
 rownames( GoalsContra ) <- c( "Home Against Goals", "Away Against Goals" )
 GoalsContra 
 #SEDE MUNDIAL---------------------------------------------------------------------------------------
 
-Sede <- matrix( c( 0, 2, 2, 2, 1, 2 ), 1, 6 )
-colnames( Sede ) <- c( "Ecuador", "Brazil", "Germany", "Italy", "Uruguay", "France" )
+Sede <- matrix( c( 0, 2, 2, 2, 1, 2, 0, 1, 0, 1 ), 1, 10 )
+colnames( Sede ) <- c( "Ecuador", "Brazil", "Germany", "Italy", "Uruguay", "France", "Colombia", 
+                       "Argentina", "Netherlands", "Spain" )
 rownames( Sede ) <- "Sede"
 Sede
 
 #PARTICIPATION--------------------------------------------------------------------------------------
-participation <- matrix( c( 3, 20, 18, 18, 12, 14 ), 1, 6 )
-colnames( participation ) <- c( "Ecuador", "Brazil", "Germany", "Italy", "Uruguay",  "France" )
+participation <- matrix( c( 3, 20, 18, 18, 12, 14, 5, 16, 10, 14 ), 1, 10 )
+colnames( participation ) <- c( "Ecuador", "Brazil", "Germany", "Italy", "Uruguay",  "France", "Colombia", 
+                                "Argentina", "Netherlands", "Spain" )
 rownames( participation ) <- "Participation"
 participation
 
@@ -168,3 +246,10 @@ Table <- rbind( Goals, GoalsContra )
 Table <- rbind( Table, Sede )
 Table1 <- rbind( Table, participation )
 Table1
+
+#CANONICAL CORRELATION------------------------------------------------------------------------------
+G1 <- Table1[ , c( 1, 2, 5, 7, 8 ) ]
+G2 <- Table1[ , c( 3, 4, 6, 9, 10 ) ]
+cc( G1, G2 )
+
+cancor( G1, G2 )
