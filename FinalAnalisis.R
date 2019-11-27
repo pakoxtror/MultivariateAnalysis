@@ -248,8 +248,27 @@ Table1 <- rbind( Table, participation )
 Table1
 
 #CANONICAL CORRELATION------------------------------------------------------------------------------
-G1 <- Table1[ , c( 1, 2, 5, 7, 8 ) ]
-G2 <- Table1[ , c( 3, 4, 6, 9, 10 ) ]
-cc( G1, G2 )
+G1 <- Table1[ , 1:4 ]
+G2 <- Table1[ , c( 5, 6 ) ]
+matcor( G1, G2 )
 
-cancor( G1, G2 )
+cc1 <- cc( G1, G2 )
+# display the canonical correlations
+cc1$cor
+#raw canonical coefficients
+cc1[ 3:4 ]
+# compute canonical loadings
+cc2 <- comput( G1, G2, cc1 )
+
+# display canonical loadings
+cc2[ 3:6 ]
+
+# tests of canonical dimensions
+rho <- cc1$cor
+## Define number of observations, number of variables in first set, and number of variables in the second set.
+n <- dim( G1 )[ 1 ]
+p <- length( G1 )
+q <- length( G2 )
+
+## Calculate p-values using the F-approximations of different test statistics:
+p.asym(rho, n, p, q, tstat = "Hotelling")
