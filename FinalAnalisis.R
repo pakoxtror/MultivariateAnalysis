@@ -300,3 +300,57 @@ Chi_test
 
 #Theorical p-value with p*q df and alpha=0.05; 15,5073 < 15,963 so, we cannot reject Ho 
 #at least one of the r canonical correlations is significant.
+
+#GLOBAL DATA CANONICAL CORRELATION ANALYSIS (CCA)---------------------------------------------------
+
+Data2 <- read.csv( "DatosGlobales.csv", header = T )
+rownames( Data2 ) <- Data2[ , 2 ]
+Data2
+#CHECKING NORMAL DISTRIBUTION OF THE DATA-----------------------------------------------------------
+Data2 <- as.matrix( Data2 )
+mvShapiro.Test( Data2 )
+#p-value = 0.01748 we cannot reject Ho for alpha=0.01. Therefore, the data is normally distributed
+
+Group1 <- Data2[ , c( 3, 5 ) ]
+Group1
+Group2 <- Data2[ , c( 4, 6 ) ]
+colnames( Group2 ) <- c( "No. of Participants", "Attendees")
+Group2
+
+matcor( Group1, Group2 )
+cc_data2 <- cc( Group1, Group2 )
+# display the canonical correlations
+cor2 <- cc_data2$cor
+#raw canonical coefficients
+cc_data2[ 3:4 ]
+# compute canonical loadings
+cc2_data2 <- comput( Group1, Group2, cc_data2 )
+# display canonical loadings
+cc2_data2[ 3:6 ]
+# tests of canonical dimensions
+rho <- cc_data2$cor
+## Define number of observations, number of variables in first set, and number of variables in the second set.
+n2 <- dim( Group1 )[ 1 ]
+p2 <- ncol( Group1 )
+q2 <- ncol( Group2 )
+
+## Calculate p-values using the F-approximations of different test statistics:
+Wilks2 <- p.asym(rho, n2, p2, q2, tstat = "Wilks")
+p.asym(rho, n2, p2, q2, tstat = "Hotelling")
+
+Final_tab <- matrix( 0, 2, 5 )
+Final_tab[ 1:2, 1 ] <- t( cor2 )
+Final_tab[ 1:2, 2 ] <- Wilks2$approx
+Final_tab[ 1:2, 3 ] <- Wilks2$df1
+Final_tab[ 1:2, 4 ] <- Wilks2$df2
+Final_tab[ 1:2, 5 ] <- Wilks2$p.value
+colnames( Final_tab ) <- c( "Corr", "F", "df1", "df2", "p-value" )
+rownames( Final_tab ) <- c( "dim 1", "dim 2" )
+#Table 1: Tests of Canonical Dimensions-------------------------------------------------------------
+Final_tab
+# Test of significance------------------------------------------------------------------------------
+Chi_test2 <- -( n2 -1/2 * ( p2 + q2 + 3 ) ) * sum( log( 1 -cc_data2$cor ) )
+Chi_test2
+#=64.57317
+#p*q degrees of freedom, alpha= 0.05, CHI_Therorical = 9.4877 which is smaller than our Chi value test 
+#Therefore, we cannot reject Ho. Then at least one of the r canonical correlations is significant.
