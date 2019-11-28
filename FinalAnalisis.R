@@ -1,6 +1,10 @@
 #LOADING LIBRARIES----------------------------------------------------------------------------------------------
 library(readxl)
 library(dplyr)
+library(CCA)
+library( CCP )
+library( ggplot2 )
+library( GGally )
 
 #LOADING DATA--------------------------------------------------------------------------------------------------
 data <- read_excel("world_cup_results.xlsx")
